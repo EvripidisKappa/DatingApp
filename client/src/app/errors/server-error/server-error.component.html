@@ -1,6 +1,6 @@
 <h4>Internal server error. Pleash refresh the page</h4>
 <ng-container *ngIf="error">
-    <h5 class="text-danger">Error: {{error}}</h5>
+    <h5 class="text-danger">Error: {{error.message}}</h5>
     <p class="font-weight-bold">Note: If you see this then Angular is probably not to blame</p>
     <p> What to do next:</p>
     <ol>
@@ -10,6 +10,6 @@
 </ol>
     <p style="font-weight: bold;">Following is the stack trace - the first line of code will tell you what caused the problem with the API</p>
     <code class="mt-5" style="background-color: whitesmoke;">
-        {{error}}
+        {{error.details}}
     </code>
 </ng-container>
