@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { MembersService } from '../_services/members.service';
+import { UserParams } from '../_models/userParams';
 
 
 @Component({
@@ -15,11 +17,10 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NavComponent implements OnInit {
   model: any ={};
-  
+ 
   
   constructor(public accountService:AccountService , private router: Router, 
-    private toastr: ToastrService) { 
-    }
+    private toastr: ToastrService,  ) {  }
 
   ngOnInit(): void {
     
@@ -30,9 +31,10 @@ export class NavComponent implements OnInit {
     this.accountService.login(this.model).subscribe({
       next: () => {
         this.router.navigateByUrl('/members');  
-      }, 
+       }, 
       
     })
+    
   }
   logout(){
     this.accountService.logout();
