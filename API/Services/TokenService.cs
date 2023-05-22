@@ -9,6 +9,7 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.ObjectModel;
 
 namespace API.Services
 {
@@ -17,9 +18,9 @@ namespace API.Services
         private readonly SymmetricSecurityKey _key;
         private readonly UserManager<AppUser> _userManager;
         public TokenService(IConfiguration config, UserManager<AppUser> userManager)
-        {
+        {   _userManager = userManager;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
-            _userManager = userManager;
+            
         }
        public async Task<string> CreateToken(AppUser user)
         {

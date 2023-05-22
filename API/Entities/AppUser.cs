@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using API.Extensions;
 
 namespace API.Entities
 {
     public class AppUser : IdentityUser<int>
     {
-        
+      
         public DateOnly DateOfBirth{get; set;}
         public String KnownAs {get; set;}
         public DateTime Created {get; set;} = DateTime.UtcNow;
@@ -27,6 +20,7 @@ namespace API.Entities
         public List<UserLike> LikedUsers { get; set; }
         public List<Message> MessagesSent{get; set;}
         public List<Message> MessagesReceived{get; set;}
-        public ICollection<AppUserRole> UserRoles {get; set;}
+        public ICollection<AppUserRole> UserRoles{get; set;}
+         
     }
 }

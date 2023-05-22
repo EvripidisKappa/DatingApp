@@ -28,9 +28,9 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
        
-        public AccountController(UserManager<AppUser> userManager , ITokenService tokenService, IMapper mapper)
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, IMapper mapper)
             {
-                _userManager = userManager;
+                _userManager=userManager;
                 _mapper = mapper;
                 _tokenService = tokenService;
                 
@@ -45,19 +45,14 @@ namespace API.Controllers
             var user = _mapper.Map<AppUser>(registerDto);
 
             user.UserName = registerDto.Username.ToLower();
-
             var result = await _userManager.CreateAsync(user, registerDto.Password);
-
-            if (!result.Succeeded) return BadRequest(result.Errors);
-
-            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
-
-            if (!roleResult.Succeeded) return BadRequest(result.Errors);
-
+            if(!result.Succeeded) return BadRequest(result.Errors);
+            var rolesResult= await _userManager.AddToRoleAsync(user, "Member");
+           if(!rolesResult.Succeeded) return BadRequest(rolesResult.Errors);
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user),
+                Token = await _tokenService.CreateToken(user),
                 KnownAs = user.KnownAs,
                 Gender = user.Gender
             };
@@ -70,12 +65,11 @@ namespace API.Controllers
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
 
             if (user == null) return Unauthorized("invalid username");
+            var result = await _userManager.CheckPasswordAsync(user , loginDto.Password);
+            if(!result) return Unauthorized("Invalid Password");
 
-            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
-
-            if (!result) return Unauthorized("Invalid password");
-
-            return new UserDto
+         
+          return new UserDto
             {
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user),
